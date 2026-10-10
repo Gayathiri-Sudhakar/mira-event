@@ -84,6 +84,16 @@ export function EventDetailsView({
 
       {/* Main Hero Header Card */}
       <div className="details-hero-card">
+        {/* Panoramic Event Photo Banner */}
+        <div className="details-banner-img-wrap">
+          <img
+            src={event.image || `/events/event-${((event.id - 1) % 6) + 1}.jpg`}
+            alt={event.title}
+            className="details-banner-img"
+          />
+          <div className="details-banner-gradient"></div>
+        </div>
+
         <div className="details-hero-badge-row">
           <span
             className="category-pill large"

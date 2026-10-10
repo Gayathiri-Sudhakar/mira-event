@@ -15,14 +15,29 @@ function buildDbConfig() {
   const serviceUri = process.env.MYSQL_URI || process.env.DATABASE_URL || process.env.SERVICE_URI;
 
   if (serviceUri) {
-    // If a full Service URI is provided: mysql://user:password@host:port/dbname
-    return {
-      uri: serviceUri,
-      waitForConnections: true,
-      connectionLimit: 10,
-      queueLimit: 0,
-      ssl: process.env.DB_SSL === "false" ? undefined : { rejectUnauthorized: false }
-    };
+    try {
+      const parsedUrl = new URL(serviceUri);
+      return {
+        host: parsedUrl.hostname,
+        port: Number(parsedUrl.port) || 3306,
+        user: decodeURIComponent(parsedUrl.username),
+        password: decodeURIComponent(parsedUrl.password),
+        database: parsedUrl.pathname.replace(/^\//, "") || "defaultdb",
+        waitForConnections: true,
+        connectionLimit: 10,
+        queueLimit: 0,
+        ssl: { rejectUnauthorized: false }
+      };
+    } catch (err) {
+      console.warn("[MySQL] URL parse warning:", err.message);
+      return {
+        uri: serviceUri,
+        waitForConnections: true,
+        connectionLimit: 10,
+        queueLimit: 0,
+        ssl: { rejectUnauthorized: false }
+      };
+    }
   }
 
   const sslMode = process.env.DB_SSL_MODE;
@@ -48,24 +63,7 @@ export async function initDatabase() {
     if (config.uri) {
       pool = mysql.createPool(config.uri);
     } else {
-      // Connect without db first to ensure it exists if local, or directly if remote
-      try {
-        const rootConn = await mysql.createConnection({
-          host: config.host,
-          port: config.port,
-          user: config.user,
-          password: config.password,
-          ssl: config.ssl
-        });
-
-        await rootConn.query(
-          `CREATE DATABASE IF NOT EXISTS \`${config.database}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;`
-        );
-        await rootConn.end();
-      } catch (err) {
-        console.warn(`[MySQL] Note: Could not run root CREATE DATABASE (${err.message}). Connecting directly to target database.`);
-      }
-
+      // Direct pool creation
       pool = mysql.createPool(config);
     }
 

@@ -35,6 +35,7 @@ CREATE TABLE IF NOT EXISTS events (
   capacity INT DEFAULT 100,
   registered_count INT DEFAULT 0,
   fee VARCHAR(50) DEFAULT 'Free',
+  image VARCHAR(500) DEFAULT NULL,
   description TEXT NOT NULL,
   tags JSON DEFAULT NULL,
   highlights JSON DEFAULT NULL,

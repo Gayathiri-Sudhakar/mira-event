@@ -55,6 +55,7 @@ function formatEventRow(row) {
     registeredCount: row.registered_count || 0,
     fee: row.fee,
     description: row.description,
+    image: row.image || `/events/event-${((row.id - 1) % 6) + 1}.jpg`,
     tags,
     highlights
   };

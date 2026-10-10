@@ -36,10 +36,18 @@ export function EventCard({
 
   return (
     <article className={`modern-event-card ${isPast ? "is-past" : ""}`}>
-      {/* Top Header Badge Row */}
-      <div className="card-top-row">
+      {/* Event Photo Banner */}
+      <div className="card-image-wrap" onClick={() => onSelectEvent(event)}>
+        <img
+          src={event.image || `/events/event-${((event.id - 1) % 6) + 1}.jpg`}
+          alt={event.title}
+          className="card-image"
+          loading="lazy"
+        />
+        <div className="card-image-gradient"></div>
+
         <span
-          className="category-pill"
+          className="category-pill on-image"
           style={{
             backgroundColor: colors.bg,
             color: colors.text,
@@ -49,28 +57,36 @@ export function EventCard({
           {event.category}
         </span>
 
+        {!isOrganizer && (
+          <button
+            type="button"
+            className={`bookmark-btn on-image ${isBookmarked ? "active" : ""}`}
+            onClick={(e) => {
+              e.stopPropagation();
+              onToggleBookmark(event.id);
+            }}
+            title={isBookmarked ? "Remove bookmark" : "Save event"}
+            aria-label="Bookmark event"
+          >
+            <Bookmark size={15} fill={isBookmarked ? "#4f46e5" : "none"} />
+          </button>
+        )}
+      </div>
+
+      {/* Top Status Row */}
+      <div className="card-top-row">
+        <div className="organizer-badge">
+          <Building2 size={13} className="org-icon" />
+          <span>{event.organizer || "Campus Club"}</span>
+        </div>
+
         <div className="card-top-actions">
           {isPast ? (
             <span className="status-badge status-past">Completed</span>
           ) : isAlmostFull ? (
             <span className="status-badge status-urgent">🔥 Almost Full</span>
           ) : (
-            <span className="status-badge status-open">Registration Open</span>
-          )}
-
-          {!isOrganizer && (
-            <button
-              type="button"
-              className={`bookmark-btn ${isBookmarked ? "active" : ""}`}
-              onClick={(e) => {
-                e.stopPropagation();
-                onToggleBookmark(event.id);
-              }}
-              title={isBookmarked ? "Remove bookmark" : "Save event"}
-              aria-label="Bookmark event"
-            >
-              <Bookmark size={16} fill={isBookmarked ? "#4f46e5" : "none"} />
-            </button>
+            <span className="status-badge status-open">Open</span>
           )}
         </div>
       </div>
