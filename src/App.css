@@ -697,7 +697,8 @@
   background: #ffffff;
   border-radius: 20px;
   border: 1px solid #e2e8f0;
-  padding: 24px;
+  padding: 0;
+  overflow: hidden;
   box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
@@ -714,12 +715,67 @@
   background: #fcfcfd;
 }
 
+/* Event Card Image Banner */
+.card-image-wrap {
+  position: relative;
+  width: 100%;
+  height: 180px;
+  overflow: hidden;
+  cursor: pointer;
+  background: #0f172a;
+}
+
+.card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  display: block;
+}
+
+.card-image-wrap:hover .card-image {
+  transform: scale(1.06);
+}
+
+.card-image-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.1) 0%, rgba(15, 23, 42, 0.4) 100%);
+  pointer-events: none;
+}
+
+.category-pill.on-image {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(6px);
+  z-index: 2;
+}
+
+.bookmark-btn.on-image {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 2;
+}
+
+.bookmark-btn.on-image:hover {
+  background: #ffffff;
+  transform: scale(1.08);
+}
+
 .card-top-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  margin-bottom: 16px;
+  padding: 16px 20px 0 20px;
+  margin-bottom: 12px;
 }
 
 .category-pill {
@@ -789,6 +845,7 @@
   display: flex;
   flex-direction: column;
   flex: 1;
+  padding: 0 20px;
 }
 
 .organizer-badge {
@@ -950,7 +1007,8 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-top: 18px;
+  padding: 14px 20px 20px 20px;
+  margin-top: auto;
 }
 
 .btn-details {
@@ -1679,7 +1737,8 @@
 
 /* Details Hero Card */
 .details-hero-card {
-  padding: 36px 32px;
+  padding: 0 32px 36px 32px;
+  overflow: hidden;
   background: #ffffff;
   border-radius: 24px;
   border: 1px solid #e2e8f0;
@@ -1687,6 +1746,39 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
+}
+
+.details-banner-img-wrap {
+  margin: 0 -32px 6px -32px;
+  height: 280px;
+  position: relative;
+  overflow: hidden;
+  background: #0f172a;
+}
+
+.details-banner-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.details-banner-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.05) 0%, rgba(15, 23, 42, 0.5) 100%);
+  pointer-events: none;
+}
+
+@media (max-width: 650px) {
+  .details-hero-card {
+    padding: 0 18px 24px 18px;
+    border-radius: 18px;
+  }
+  .details-banner-img-wrap {
+    margin: 0 -18px 4px -18px;
+    height: 200px;
+  }
 }
 
 .details-hero-badge-row {
